@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/shine/:path*",
+      "destination": "https://www.shine.com/api/:path*"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
