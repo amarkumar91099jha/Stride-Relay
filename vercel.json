@@ -1,11 +1,12 @@
 {
   "buildCommand": "pnpm build",
   "outputDirectory": "dist",
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/api/shine/:path*", "destination": "https://www.shine.com/api/:path*" },
+    { "source": "/:path*", "destination": "/index.html" }
   ]
 }
+
 
 
 
