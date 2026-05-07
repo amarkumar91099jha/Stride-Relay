@@ -1,5 +1,6 @@
+"use client";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { getCampaigns } from "@/api/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -46,7 +47,7 @@ export function CampaignListPage() {
                         </div>
                     ) : null}
                     {campaigns?.map((job) => (
-                        <Link key={job.jobId} to={`/dashboard/campaigns/${job.jobId}`}>
+                        <Link key={job.jobId} href={`/dashboard/campaigns/${job.jobId}`}>
                             <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
                                 <CardHeader className="pb-3">
                                     <div className="flex items-start justify-between gap-2">

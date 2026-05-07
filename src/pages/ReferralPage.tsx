@@ -1,7 +1,7 @@
+"use client";
 import { useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { Helmet } from "react-helmet-async";
 import { getJobDescription, createReferral, getMyReferrals } from "@/api/client";
 import { buildReferralUrl } from "@/lib/share";
 import type { ShareChannel } from "@/lib/share";
@@ -12,9 +12,8 @@ import {
     User, Phone, CheckCircle2, Plus
 } from "lucide-react";
 
-export function ReferralPage() {
-    const { jobId } = useParams<{ jobId: string }>();
-    const [searchParams] = useSearchParams();
+export function ReferralPage({ jobId }: { jobId: string }) {
+    const searchParams = useSearchParams();
     const candidateId = searchParams.get("candidateId") ?? "";
     const campaignSlug = searchParams.get("campaign") ?? "referral";
     const [refereeName, setRefereeName] = useState("");
@@ -130,12 +129,7 @@ export function ReferralPage() {
         <>
             <div className={`min-h-screen bg-relay-cream lg:flex lg:items-center lg:justify-center lg:py-16 max-lg:bg-relay-bg${!darkTheme ? " relay-light" : ""}`}>
                 {job && (
-                    <Helmet>
-                        <title>{job.jobTitle} at {job.company} - Refer via Stride Relay</title>
-                        <meta property="og:title" content={`${job.jobTitle} at ${job.company}`} />
-                        <meta property="og:description" content={job.description.slice(0, 160)} />
-                        <meta property="og:type" content="website" />
-                    </Helmet>
+                    <title>{job.jobTitle} at {job.company} - Refer via Stride Relay</title>
                 )}
 
                 {/* Phone bezel on desktop, full-screen on mobile */}

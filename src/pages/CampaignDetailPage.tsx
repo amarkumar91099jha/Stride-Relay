@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+"use client";
+import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getCampaign, getAnalytics, getReferrals } from "@/api/client";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,8 +11,7 @@ import { ReferrerLeaderboard } from "@/components/ReferrerLeaderboard";
 import { ReferralTable } from "@/components/ReferralTable";
 import { Users, MousePointerClick, FileCheck2, Eye, ArrowLeft } from "lucide-react";
 
-export function CampaignDetailPage() {
-    const { campaignId } = useParams<{ campaignId: string }>();
+export function CampaignDetailPage({ campaignId }: { campaignId: string }) {
 
     const { data: job, isLoading: loadingJob } = useQuery({
         queryKey: ["dashboardJob", campaignId],

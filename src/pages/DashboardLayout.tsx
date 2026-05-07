@@ -1,4 +1,6 @@
-import { Outlet, NavLink } from "react-router-dom";
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -9,29 +11,29 @@ const navItems = [
 ];
 
 function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
+    const pathname = usePathname();
     return (
         <nav className="space-y-1 py-4">
             {navItems.map((item) => (
-                <NavLink
+                <Link
                     key={item.to}
-                    to={item.to}
+                    href={item.to}
                     onClick={onNavigate}
-                    className={({ isActive }) =>
-                        `flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${isActive
+                    className={`flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
+                        pathname.startsWith(item.to)
                             ? "bg-brand text-white"
                             : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                        }`
-                    }
+                    }`}
                 >
                     <item.icon className="h-4 w-4" />
                     {item.label}
-                </NavLink>
+                </Link>
             ))}
         </nav>
     );
 }
 
-export function DashboardLayout() {
+export function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
@@ -79,7 +81,7 @@ export function DashboardLayout() {
 
                 {/* Main content */}
                 <main className="flex-1 p-4 md:p-6 lg:p-8">
-                    <Outlet />
+                    {children}
                 </main>
             </div>
         </div>

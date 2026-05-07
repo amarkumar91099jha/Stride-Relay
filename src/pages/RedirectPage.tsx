@@ -1,9 +1,9 @@
+"use client";
 import { useEffect } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "next/navigation";
 
-export function RedirectPage() {
-    const { trackingToken } = useParams<{ trackingToken: string }>();
-    const [searchParams] = useSearchParams();
+export function RedirectPage({ trackingToken }: { trackingToken: string }) {
+    const searchParams = useSearchParams();
     const jobUrl = searchParams.get("url");
 
     useEffect(() => {
