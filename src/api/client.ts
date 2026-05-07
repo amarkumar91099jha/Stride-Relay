@@ -57,7 +57,7 @@ function stripHtml(html: string): string {
 }
 
 export async function getJobDescription(jobId: string): Promise<ShineJob> {
-    const res = await fetch(`/api/shine/v2/search/job-description/${jobId}/`);
+    const res = await fetch(`/api/shine/v2/search/job-description/${jobId}/`, { cache: 'no-store' });
     if (!res.ok) throw new Error(`Job ${jobId} not found`);
     const data = await res.json();
     const job = data.results?.[0];
