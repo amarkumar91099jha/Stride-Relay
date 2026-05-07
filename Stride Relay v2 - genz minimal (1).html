@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stride Relay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,800;1,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBF7EE;            /* phone interior — warm cream */
+  --canvas:#F1EAD7;        /* inset / tabs container */
+  --artboard:#ECE4D0;      /* page bg behind phone */
+  --surface:#FFFFFF;       /* cards — pure white */
+  --surface-2:#F7F1DF;     /* alt surface, hover state */
+  --line:#E5DEC9;          /* card borders */
+  --line-bright:#D2C9B0;
+  --gold:#B8861C;          /* rich amber gold for text/accents */
+  --gold-bright:#E8B339;   /* original gold for fills */
+  --gold-dim:#8C6A1F;
+  --green:#16A34A;
+  --whatsapp:#1FA851;
+  --linkedin:#0A66C2;
+  --text:#1C1814;          /* dark warm text */
+  --muted:#6E6657;         /* medium warm grey */
+  --dim:#A39C8B;           /* lighter dim */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  background:var(--artboard);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  letter-spacing:-0.005em;
+}
+body{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+}
+
+.phone{
+  width:390px;
+  max-width:100%;
+  height:844px;
+  background:#000;
+  border-radius:44px;
+  padding:9px;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.06),
+    0 24px 48px rgba(20,16,8,0.18),
+    0 50px 100px rgba(20,16,8,0.10);
+}
+.phone-inner{
+  width:100%;
+  height:100%;
+  background:var(--bg);
+  border-radius:36px;
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+
+.status-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 26px 4px;
+  font-size:14px;
+  font-weight:600;
+  flex-shrink:0;
+}
+.status-bar .icons{display:flex;gap:5px;align-items:center;opacity:0.85}
+
+.app-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 16px;
+  flex-shrink:0;
+  gap:8px;
+}
+.icon-btn{
+  width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  color:var(--muted);
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  flex-shrink:0;
+}
+.icon-btn:hover{color:var(--text)}
+.app-wordmark{
+  flex:1;
+  text-align:center;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-style:italic;
+  font-size:19px;
+  letter-spacing:0.05em;
+  color:var(--text);
+  text-transform:uppercase;
+  user-select:none;
+}
+.app-wordmark .slash{color:var(--dim);font-weight:500;font-style:normal;margin:0 5px}
+.app-wordmark .gold{color:var(--gold)}
+
+.app-body{
+  flex:1;
+  overflow-y:auto;
+  padding:18px 26px 130px;
+  scrollbar-width:none;
+}
+.app-body::-webkit-scrollbar{display:none}
+
+/* Hero — sport poster */
+.hero{margin-bottom:30px;position:relative}
+.sport-stamp{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-style:italic;
+  font-size:13px;
+  letter-spacing:0.10em;
+  color:var(--text);
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+.sport-stamp .pulse{
+  width:7px;height:7px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px var(--green);
+  animation:pulse-live 1.6s ease-in-out infinite;
+  flex-shrink:0;
+}
+.sport-stamp .divider{color:var(--dim);font-weight:500;font-style:normal}
+.sport-stamp .gold{color:var(--gold)}
+@keyframes pulse-live{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.4;transform:scale(0.85)}
+}
+.sport-headline{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-style:italic;
+  font-size:68px;
+  line-height:0.86;
+  letter-spacing:-0.005em;
+  text-transform:uppercase;
+  color:var(--text);
+}
+.sport-headline .gold{color:var(--gold)}
+.sport-rule{
+  width:54px;
+  height:3px;
+  background:var(--gold);
+  margin:18px 0 14px;
+  transform:skewX(-14deg);
+}
+.hero p{
+  font-size:14.5px;
+  color:var(--muted);
+  line-height:1.5;
+  max-width:300px;
+}
+.hero p .gold{color:var(--gold);font-weight:600}
+
+/* Role card */
+.role-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+}
+.role-header{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  margin-bottom:14px;
+}
+.company-logo{
+  width:44px;height:44px;
+  background:#231F18;
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:21px;
+  font-weight:700;
+  color:var(--gold);
+  flex-shrink:0;
+}
+.company-meta{flex:1;min-width:0;padding-top:2px}
+.company-row{
+  display:flex;align-items:center;gap:8px;
+  flex-wrap:wrap;
+}
+.company-name{font-size:14.5px;font-weight:600;color:var(--text)}
+.verified{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  font-size:11.5px;
+  font-weight:600;
+  color:var(--green);
+}
+.verified svg{flex-shrink:0}
+.company-location{
+  font-size:12.5px;
+  color:var(--muted);
+  margin-top:3px;
+}
+.role-title{
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:-0.015em;
+  line-height:1.25;
+}
+.role-team{
+  font-size:13.5px;
+  color:var(--muted);
+  margin-top:4px;
+}
+.role-tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+.tag{
+  font-size:12.5px;
+  font-weight:500;
+  padding:6px 11px;
+  border-radius:8px;
+  background:#221E18;
+  color:var(--text);
+}
+.tag.salary{
+  background:rgba(232,179,57,0.12);
+  color:var(--gold);
+}
+.role-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+  font-size:13px;
+}
+.status-active{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  color:var(--green);
+  font-weight:500;
+}
+.status-active .dot{
+  width:7px;height:7px;
+  background:var(--green);
+  border-radius:50%;
+}
+.see-full{
+  color:var(--gold);
+  font-weight:500;
+  cursor:pointer;
+}
+
+/* Invites */
+.invites{margin-top:28px}
+.invites-label{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:16px;
+}
+.invites-label strong{color:var(--text);font-weight:600}
+.invites-row{
+  display:flex;
+  gap:10px;
+  justify-content:space-between;
+}
+.dot{
+  width:46px;height:46px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform 0.15s, background 0.15s, border-color 0.15s;
+}
+.dot:active{transform:scale(0.94)}
+.dot.filled{
+  background:var(--gold);
+  color:#000;
+}
+.dot.empty{
+  background:transparent;
+  border:1px dashed var(--line);
+  color:var(--dim);
+  font-weight:300;
+  font-size:22px;
+}
+.dot.empty:hover{
+  border-color:var(--muted);
+  color:var(--muted);
+}
+
+/* Section (tabbed) */
+.section{margin-top:32px}
+.section-title{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:14px;
+  font-weight:500;
+  letter-spacing:0.01em;
+}
+
+/* Card wrapper */
+.tabbed-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px 18px 18px;
+}
+.tabbed-card .tab-panel{min-height:172px}
+
+/* Segmented control */
+.tabs{
+  display:flex;
+  background:var(--canvas);
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:4px;
+  gap:2px;
+  margin-bottom:14px;
+}
+.tab{
+  flex:1;
+  text-align:center;
+  padding:10px 8px;
+  font-size:13px;
+  font-weight:500;
+  color:var(--muted);
+  border-radius:9px;
+  cursor:pointer;
+  border:none;
+  background:transparent;
+  font-family:inherit;
+  letter-spacing:-0.005em;
+  transition:background 0.25s, color 0.25s;
+  outline:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.tab:hover{color:var(--text)}
+.tab:focus,
+.tab:focus-visible{outline:none;box-shadow:none}
+.tab.active{
+  background:#FFFFFF;
+  color:var(--gold);
+  font-weight:600;
+  box-shadow:0 1px 2px rgba(20,16,8,0.06), 0 2px 6px rgba(20,16,8,0.06);
+}
+.tab-panel{display:none;animation:fadeIn 0.22s ease-out}
+.tab-panel.active{display:block}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(4px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Earnings ladder */
+.earn-row{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  padding:14px 0;
+  position:relative;
+}
+.earn-row + .earn-row{border-top:1px solid var(--line)}
+.earn-stage{
+  width:18px;
+  flex-shrink:0;
+  display:flex;
+  justify-content:center;
+  padding-top:8px;
+  position:relative;
+}
+.earn-stage .dot{
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 0 4px rgba(232,179,57,0.12);
+  position:relative;
+  z-index:2;
+}
+.earn-row:first-child .earn-stage .dot{
+  background:transparent;
+  border:2px solid var(--gold);
+  box-shadow:0 0 0 3px rgba(184,134,28,0.08);
+}
+.earn-row:not(:last-of-type) .earn-stage::after{
+  content:'';
+  position:absolute;
+  top:22px;
+  bottom:-22px;
+  width:1px;
+  left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(to bottom, rgba(184,134,28,0.50), rgba(184,134,28,0.15));
+}
+.earn-amount{
+  font-size:20px;
+  font-weight:700;
+  color:var(--gold);
+  letter-spacing:-0.015em;
+  width:78px;
+  flex-shrink:0;
+  font-variant-numeric:tabular-nums;
+  line-height:1.1;
+}
+.earn-desc{
+  font-size:14.5px;
+  color:var(--text);
+  line-height:1.4;
+  flex:1;
+  padding-top:1px;
+}
+.earn-desc .meta{
+  display:block;
+  font-size:12.5px;
+  color:var(--muted);
+  margin-top:3px;
+}
+.earn-total{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  padding:14px 0 0;
+  margin-top:10px;
+  margin-left:32px;
+  border-top:1px solid var(--line);
+}
+.earn-total .label{
+  font-size:13px;
+  color:var(--muted);
+  font-weight:500;
+}
+.earn-total .value{
+  display:flex;
+  align-items:baseline;
+  gap:5px;
+  font-size:13px;
+  color:var(--muted);
+}
+.earn-total .value .total{
+  font-size:22px;
+  font-weight:700;
+  color:var(--gold);
+  letter-spacing:-0.015em;
+}
+
+/* How it works — numbered story */
+.steps{list-style:none}
+.steps li{
+  display:flex;
+  gap:18px;
+  align-items:baseline;
+  padding:8px 0;
+  font-size:14.5px;
+  color:var(--text);
+  line-height:1.45;
+}
+.steps li .num{
+  font-size:11.5px;
+  color:var(--dim);
+  font-variant-numeric:tabular-nums;
+  font-weight:500;
+  flex-shrink:0;
+  letter-spacing:0.04em;
+}
+
+/* (earnings ladder styles moved into segmented control block) */
+
+/* Footer */
+.app-footer{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  padding:14px 26px 24px;
+  background:linear-gradient(to top,var(--bg) 75%,rgba(251,247,238,0.7) 92%,transparent);
+}
+.btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+  font-weight:600;
+  font-size:15.5px;
+  padding:16px 20px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  font-family:inherit;
+  background:var(--gold);
+  color:#000;
+  transition:opacity 0.15s;
+  letter-spacing:-0.005em;
+}
+.btn:active{opacity:0.85}
+.footer-note{
+  font-size:12px;
+  color:var(--dim);
+  text-align:center;
+  margin-top:10px;
+}
+
+/* === SPORT THEME — applied across the page === */
+.role-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-style:italic;
+  font-size:26px;
+  letter-spacing:0;
+  line-height:1.04;
+  text-transform:uppercase;
+}
+.role-team{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  font-style:italic;
+  font-size:12.5px;
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-top:6px;
+}
+.company-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-style:italic;
+  font-size:15px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+}
+.verified{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-style:italic;
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+  font-size:11px;
+}
+.tag{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-style:italic;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  font-size:12.5px;
+  padding:5px 11px;
+}
+.status-active{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-style:italic;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  font-size:12px;
+}
+.see-full{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-style:italic;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  font-size:12px;
+}
+.invites-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-style:italic;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  font-size:12px;
+}
+.invites-label strong{font-weight:900;letter-spacing:0.04em}
+.dot.filled{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-style:italic;
+  font-size:16px;
+  letter-spacing:0.04em;
+}
+.tab{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-style:italic;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  font-size:13px;
+}
+.tab.active{font-weight:800}
+.earn-amount{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-style:italic;
+  font-size:30px;
+  letter-spacing:-0.005em;
+  line-height:1;
+  width:100px;
+  color:var(--gold);
+}
+.earn-desc{
+  font-size:14px;
+  padding-top:4px;
+}
+.earn-total{margin-left:32px}
+.earn-total .label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-style:italic;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  font-size:13px;
+}
+.earn-total .value{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:600;
+  font-style:italic;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  font-size:12px;
+  color:var(--muted);
+}
+.earn-total .value .total{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-style:italic;
+  font-size:28px;
+  letter-spacing:-0.005em;
+  text-transform:none;
+  margin-left:6px;
+}
+.steps li .num{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-style:italic;
+  font-size:18px;
+  letter-spacing:0.04em;
+  color:var(--gold);
+  width:22px;
+}
+.btn{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-style:italic;
+  font-size:18px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+}
+.footer-note{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  font-style:italic;
+  font-size:11px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+}
+/* sport accent rules on cards */
+.role-card{position:relative;overflow:hidden}
+.role-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  width:46px;height:3px;
+  background:var(--gold);
+  transform:skewX(-14deg);
+  transform-origin:left top;
+}
+.tabbed-card{position:relative;overflow:hidden}
+.tabbed-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  width:46px;height:3px;
+  background:var(--gold);
+  transform:skewX(-14deg);
+  transform-origin:left top;
+}
+/* sport mark before invites label */
+.invites-label{display:flex;align-items:center;gap:9px}
+.invites-label::before{
+  content:'';
+  display:inline-block;
+  width:20px;height:2px;
+  background:var(--gold);
+  transform:skewX(-14deg);
+  flex-shrink:0;
+}
+
+/* === REFINEMENT — calmer sizing, more breathing room === */
+.app-body{padding:14px 26px 130px}
+.hero{margin-bottom:36px}
+.sport-stamp{font-size:11.5px;margin-bottom:12px;letter-spacing:0.10em}
+.sport-stamp .pulse{width:6px;height:6px}
+.sport-headline{font-size:54px;line-height:0.88}
+.sport-rule{width:46px;height:2px;margin:14px 0 12px}
+.hero p{font-size:14px;line-height:1.55}
+
+.role-card{padding:20px}
+.role-card::before{width:42px;height:2px}
+.role-title{font-size:22px;line-height:1.05}
+.role-team{font-size:11.5px;margin-top:5px;letter-spacing:0.08em}
+.company-name{font-size:14px}
+.verified{font-size:10.5px}
+.role-tags{margin-top:14px;gap:7px}
+.tag{font-size:11.5px;padding:5px 10px}
+.role-footer{margin-top:16px;padding-top:13px}
+.status-active,.see-full{font-size:11.5px}
+
+.invites{margin-top:34px}
+.invites-label{margin-bottom:16px;font-size:11px;letter-spacing:0.10em}
+.invites-row{gap:9px}
+.dot{width:44px;height:44px;font-size:13.5px}
+.dot.empty{font-size:20px}
+
+.section{margin-top:36px}
+.tabbed-card{padding:14px 18px 18px}
+.tabbed-card::before{width:42px;height:2px}
+.tabs{margin-bottom:16px}
+.tab{font-size:12px;padding:9px 8px;letter-spacing:0.06em}
+
+.earn-row{padding:13px 0;gap:14px}
+.earn-stage{padding-top:6px;width:16px}
+.earn-stage .dot{width:7px;height:7px;box-shadow:0 0 0 3px rgba(232,179,57,0.10)}
+.earn-amount{font-size:24px;width:86px;line-height:1.05}
+.earn-desc{font-size:13.5px;padding-top:1px;line-height:1.45}
+.earn-desc .meta{font-size:12px;margin-top:3px}
+.earn-total{padding:14px 0 0;margin-top:8px;margin-left:30px}
+.earn-total .label{font-size:11.5px;letter-spacing:0.12em}
+.earn-total .value{font-size:11px}
+.earn-total .value .total{font-size:22px}
+
+.steps li{padding:11px 0;font-size:14px;gap:16px;line-height:1.5}
+.steps li .num{font-size:13.5px;width:18px;letter-spacing:0.03em}
+
+.tabbed-card .tab-panel{min-height:170px}
+
+.app-footer{padding:14px 26px 22px}
+.btn{font-size:16px;padding:14px 18px;letter-spacing:0.10em}
+.footer-note{font-size:10.5px;margin-top:10px;letter-spacing:0.14em}
+
+/* === DEEP MINIMAL — strip decoration, calm typography === */
+/* Hide all sport decorations */
+.sport-stamp,
+.sport-rule,
+.role-card::before,
+.tabbed-card::before,
+.invites-label::before{display:none !important}
+
+/* Header wordmark — calmer */
+.app-wordmark{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:600;
+  font-size:14px;
+  letter-spacing:-0.005em;
+  text-transform:none;
+  color:var(--text);
+}
+.app-wordmark .slash{display:none}
+.app-wordmark .gold{color:var(--gold);font-weight:600;margin-left:4px}
+
+/* Hero — smaller, calmer */
+.hero{margin-bottom:36px}
+.sport-headline{
+  font-size:38px;
+  line-height:1;
+  letter-spacing:-0.01em;
+}
+.hero p{
+  font-size:14px;
+  color:var(--muted);
+  margin-top:14px;
+  max-width:300px;
+}
+
+/* Role card — plain sans, no stripe */
+.role-card{padding:20px;border-radius:16px}
+.role-title{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:700;
+  font-size:18px;
+  letter-spacing:-0.015em;
+  line-height:1.3;
+  text-transform:none;
+}
+.role-team{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:400;
+  font-size:13px;
+  letter-spacing:0;
+  text-transform:none;
+  color:var(--muted);
+  margin-top:4px;
+}
+.company-name{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:600;
+  font-size:14px;
+  letter-spacing:0;
+  text-transform:none;
+}
+.verified{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:500;
+  font-size:11px;
+  letter-spacing:0;
+  text-transform:none;
+}
+.tag{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:500;
+  font-size:12px;
+  letter-spacing:0;
+  text-transform:none;
+  padding:5px 10px;
+  border-radius:6px;
+  background:var(--surface-2);
+  color:var(--text);
+}
+.tag.salary{
+  background:rgba(184,134,28,0.10);
+  color:var(--gold);
+}
+.role-footer{margin-top:16px;padding-top:14px}
+.status-active,
+.see-full{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:500;
+  font-size:12px;
+  letter-spacing:0;
+  text-transform:none;
+}
+
+/* Invites — refined squares */
+.invites{margin-top:36px}
+.invites-label{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:400;
+  font-size:13px;
+  letter-spacing:0;
+  text-transform:none;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:14px;
+  gap:0;
+}
+.invites-label strong{
+  font-weight:600;
+  color:var(--text);
+  letter-spacing:0;
+}
+.invites-label .meta{
+  font-size:11.5px;
+  color:var(--dim);
+  font-weight:400;
+}
+.invites-row{gap:10px}
+.dot{
+  width:46px;
+  height:46px;
+  border-radius:12px;
+  position:relative;
+}
+.dot.filled{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:700;
+  font-size:13.5px;
+  letter-spacing:0;
+  background:var(--gold-bright);
+  color:#1a1408;
+  box-shadow:0 1px 0 rgba(255,255,255,0.30) inset, 0 4px 14px rgba(184,134,28,0.25);
+}
+.dot.empty{
+  border:1.5px dashed rgba(184,134,28,0.30);
+  background:transparent;
+  color:var(--dim);
+  font-weight:300;
+  font-size:20px;
+}
+.dot.empty:hover{
+  border-color:rgba(184,134,28,0.55);
+  color:var(--muted);
+  background:rgba(184,134,28,0.05);
+}
+
+/* Section spacing */
+.section{margin-top:36px}
+
+/* Tabbed card — plain */
+.tabbed-card{padding:14px 18px 18px;border-radius:16px}
+.tabs{margin-bottom:18px}
+.tab{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:500;
+  font-size:13px;
+  letter-spacing:0;
+  text-transform:none;
+  padding:9px 8px;
+}
+.tab.active{font-weight:600}
+
+/* Earn rows — keep Barlow only on amounts, calmer */
+.earn-row{padding:13px 0;gap:14px}
+.earn-stage{padding-top:7px;width:14px}
+.earn-stage .dot{width:6px;height:6px;background:var(--gold);box-shadow:0 0 0 3px rgba(184,134,28,0.10)}
+.earn-amount{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-style:italic;
+  font-size:22px;
+  color:var(--text);
+  width:80px;
+  line-height:1.05;
+}
+.earn-desc{font-size:13.5px;padding-top:1px;line-height:1.45}
+.earn-desc .meta{font-size:12px;color:var(--muted);margin-top:3px}
+.earn-total{padding:14px 0 0;margin-top:8px;margin-left:28px;align-items:center}
+.earn-total .label{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:500;
+  font-size:12px;
+  letter-spacing:0;
+  text-transform:none;
+  color:var(--muted);
+}
+.earn-total .value{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:400;
+  font-size:12px;
+  letter-spacing:0;
+  text-transform:none;
+  color:var(--muted);
+}
+.earn-total .value .total{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-style:italic;
+  font-size:22px;
+  color:var(--gold);
+  letter-spacing:-0.005em;
+  margin-left:5px;
+  text-transform:none;
+}
+
+/* Steps — calm numbers */
+.steps li{padding:10px 0;font-size:14px;gap:14px;line-height:1.5}
+.steps li .num{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:500;
+  font-size:12px;
+  letter-spacing:0;
+  color:var(--dim);
+  width:18px;
+}
+
+/* CTA — sporty with subtle motion */
+.btn{
+  font-family:'Barlow Condensed',sans-serif;
+  font-style:italic;
+  font-weight:800;
+  font-size:15px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  padding:15px 18px;
+  color:#1a1408;
+  background:linear-gradient(105deg, var(--gold-bright) 0%, var(--gold-bright) 38%, #F4D070 50%, var(--gold-bright) 62%, var(--gold-bright) 100%);
+  background-size:240% 100%;
+  background-position:100% 0;
+  box-shadow:0 4px 16px rgba(232,179,57,0.32), inset 0 1px 0 rgba(255,255,255,0.35);
+  transition:transform 0.22s cubic-bezier(0.32,0.72,0.24,1), box-shadow 0.3s ease;
+  position:relative;
+  overflow:hidden;
+  animation:btn-shine 3.6s ease-in-out infinite;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 22px rgba(232,179,57,0.45), inset 0 1px 0 rgba(255,255,255,0.40);
+}
+.btn:active{
+  transform:scale(0.98);
+  box-shadow:0 2px 8px rgba(232,179,57,0.22), inset 0 1px 0 rgba(255,255,255,0.30);
+  opacity:1;
+  transition:transform 0.1s ease, box-shadow 0.1s ease;
+}
+@keyframes btn-shine{
+  0%, 65%{background-position:100% 0}
+  100%{background-position:-30% 0}
+}
+@media (prefers-reduced-motion: reduce){
+  .btn{animation:none}
+}
+
+/* Footer — plain */
+.footer-note{
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-weight:400;
+  font-size:12px;
+  letter-spacing:0;
+  text-transform:none;
+  color:var(--dim);
+  margin-top:10px;
+}
+
+/* === Bottom sheet === */
+.sheet-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+  z-index:10;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+.sheet-backdrop.active{
+  opacity:1;
+  visibility:visible;
+  transition:opacity 0.25s ease;
+}
+.sheet{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  background:var(--bg);
+  border-top:1px solid var(--line);
+  border-radius:22px 22px 0 0;
+  z-index:11;
+  transform:translateY(100%);
+  transition:transform 0.32s cubic-bezier(0.32,0.72,0.24,1);
+  padding:10px 22px 26px;
+  box-shadow:0 -16px 40px rgba(20,16,8,0.10),0 -2px 8px rgba(20,16,8,0.04);
+}
+.sheet.active{transform:translateY(0)}
+.sheet-handle{
+  width:38px;height:4px;
+  background:rgba(28,24,20,0.18);
+  border-radius:2px;
+  margin:0 auto 16px;
+}
+.sheet-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:14px;
+}
+.sheet-title{
+  font-family:'Inter',sans-serif;
+  font-size:16px;
+  font-weight:600;
+  letter-spacing:-0.005em;
+  color:var(--text);
+}
+.sheet-sub{
+  font-size:12px;
+  color:var(--muted);
+}
+.share-list{
+  display:flex;
+  flex-direction:column;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+}
+.share-item{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:13px 14px;
+  cursor:pointer;
+  background:transparent;
+  border:none;
+  width:100%;
+  text-align:left;
+  font-family:inherit;
+  color:var(--text);
+  outline:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.share-item:active{background:rgba(28,24,20,0.03)}
+.share-item + .share-item{border-top:1px solid var(--line)}
+.share-icon{
+  width:36px;height:36px;
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.share-icon.whatsapp{background:rgba(37,211,102,0.14);color:#1FA851}
+.share-icon.linkedin{background:rgba(10,102,194,0.14);color:#0A66C2}
+.share-icon.copy{background:rgba(184,134,28,0.12);color:var(--gold)}
+.share-meta{flex:1;min-width:0}
+.share-label{
+  font-size:14px;
+  font-weight:500;
+  color:var(--text);
+  letter-spacing:-0.005em;
+}
+.share-hint{
+  font-size:11.5px;
+  color:var(--muted);
+  margin-top:2px;
+}
+.share-arrow{
+  color:var(--dim);
+  flex-shrink:0;
+}
+/* Soft gold strip above share options */
+.sheet-callout{
+  display:flex;
+  gap:9px;
+  align-items:flex-start;
+  background:rgba(184,134,28,0.08);
+  border-radius:10px;
+  padding:11px 13px;
+  margin-bottom:14px;
+  font-size:12.5px;
+  color:var(--text);
+  line-height:1.55;
+}
+.sheet-callout .icon{
+  flex-shrink:0;
+  color:var(--gold);
+  margin-top:1px;
+}
+.sheet-callout strong{
+  color:var(--gold);
+  font-weight:600;
+}
+
+/* === Your stats — relay scoreboard === */
+.stats{margin-top:34px}
+.stats-label{
+  font-family:'Inter',sans-serif;
+  font-weight:500;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+}
+.stats-label .hint{
+  font-size:11.5px;
+  color:var(--dim);
+  font-weight:400;
+}
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+}
+.stat{
+  text-align:center;
+  padding:16px 6px;
+  position:relative;
+}
+.stat + .stat::before{
+  content:'';
+  position:absolute;
+  left:0;top:16px;bottom:16px;
+  width:1px;
+  background:var(--line);
+}
+.stat-value{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;
+  font-style:italic;
+  font-size:26px;
+  letter-spacing:-0.005em;
+  line-height:1;
+  color:var(--text);
+}
+.stat.earned{
+  background:linear-gradient(180deg,rgba(184,134,28,0.08),transparent);
+}
+.stat.earned .stat-value{color:var(--gold)}
+.stat-label{
+  font-family:'Inter',sans-serif;
+  font-size:10.5px;
+  color:var(--muted);
+  margin-top:7px;
+  font-weight:500;
+  letter-spacing:0;
+  text-transform:none;
+}
+
+@media (max-width:430px){
+  body{padding:0}
+  .phone{
+    border-radius:0;
+    padding:0;
+    box-shadow:none;
+    width:100%;
+    height:100vh;
+  }
+  .phone-inner{border-radius:0}
+}
+</style>
+</head>
+<body>
+
+<div class="phone">
+<div class="phone-inner">
+
+  <div class="status-bar">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><path d="M2 7l2 2 4-4 4 4 2-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><rect x="0" y="7" width="2" height="4" rx="0.5"/><rect x="3.5" y="5" width="2" height="6" rx="0.5"/><rect x="7" y="3" width="2" height="8" rx="0.5"/><rect x="10.5" y="1" width="2" height="10" rx="0.5"/><rect x="14" y="0" width="2" height="11" rx="0.5"/></svg>
+    </span>
+  </div>
+
+  <div class="app-header">
+    <button class="icon-btn" aria-label="Back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="app-wordmark">Stride<span class="slash">/</span><span class="gold">Relay</span></div>
+    <button class="icon-btn" aria-label="Terms">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    </button>
+  </div>
+
+  <div class="app-body">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="sport-stamp">
+        <span class="pulse"></span>
+        <span>RELAY · LIVE</span>
+        <span class="divider">/</span>
+        <span class="gold">PRIZE ₹5,500</span>
+      </div>
+      <h1 class="sport-headline">
+        Know<br>
+        someone<br>
+        <span class="gold">good?</span>
+      </h1>
+      <div class="sport-rule"></div>
+      <p>Pass this role to a friend. Earn <span class="gold">up to ₹5,500</span> if they get hired.</p>
+    </div>
+
+    <!-- Role -->
+    <div class="role-card">
+      <div class="role-header">
+        <div class="company-logo">A</div>
+        <div class="company-meta">
+          <div class="company-row">
+            <span class="company-name">Acme Corp</span>
+            <span class="verified">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+              Verified
+            </span>
+          </div>
+          <div class="company-location">Bengaluru · Hybrid</div>
+        </div>
+      </div>
+      <div class="role-title">Senior Backend Engineer</div>
+      <div class="role-team">Product Infrastructure</div>
+      <div class="role-tags">
+        <span class="tag">3–6 yrs</span>
+        <span class="tag salary">₹18–28 LPA</span>
+        <span class="tag">Full-time</span>
+      </div>
+      <div class="role-footer">
+        <span class="status-active">
+          <span class="dot"></span>
+          Active
+        </span>
+        <span class="see-full">See full role →</span>
+      </div>
+    </div>
+
+    <!-- Invites -->
+    <div class="invites">
+      <div class="invites-label">
+        <strong>1 invited</strong>
+        <span class="meta">5 left to go</span>
+      </div>
+      <div class="invites-row">
+        <div class="dot filled">AK</div>
+        <div class="dot empty">+</div>
+        <div class="dot empty">+</div>
+        <div class="dot empty">+</div>
+        <div class="dot empty">+</div>
+        <div class="dot empty">+</div>
+      </div>
+    </div>
+
+    <!-- How you earn / How it works -->
+    <div class="section">
+      <div class="tabbed-card">
+
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-target="panel-earn" role="tab" aria-selected="true">How you earn</button>
+          <button class="tab" data-target="panel-works" role="tab" aria-selected="false">How it works</button>
+        </div>
+
+        <div class="tab-panel active" id="panel-earn" role="tabpanel">
+          <div class="earn-row">
+            <div class="earn-stage"><span class="dot"></span></div>
+            <div class="earn-amount">₹500</div>
+            <div class="earn-desc">
+              When they're shortlisted
+              <span class="meta">Paid instantly to your UPI</span>
+            </div>
+          </div>
+          <div class="earn-row">
+            <div class="earn-stage"><span class="dot"></span></div>
+            <div class="earn-amount">₹5,000</div>
+            <div class="earn-desc">
+              When they're hired
+              <span class="meta">Paid 15 days after they join</span>
+            </div>
+          </div>
+          <div class="earn-total">
+            <span class="label">Total</span>
+            <span class="value">up to <span class="total">₹5,500</span></span>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="panel-works" role="tabpanel">
+          <ol class="steps">
+            <li><span class="num">01</span><span>Send the role to someone good</span></li>
+            <li><span class="num">02</span><span>They apply through your unique link</span></li>
+            <li><span class="num">03</span><span>They get shortlisted, then hired</span></li>
+          </ol>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Your stats -->
+    <div class="stats">
+      <div class="stats-label">
+        <span>Your stats</span>
+        <span class="hint">Live · this role</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-value">1</div>
+          <div class="stat-label">Shared</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Shortlisted</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Hired</div>
+        </div>
+        <div class="stat earned">
+          <div class="stat-value">₹0</div>
+          <div class="stat-label">Earned</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="app-footer">
+    <button class="btn" id="open-share">Send to a friend</button>
+    <div class="footer-note">No signup needed for your friend</div>
+  </div>
+
+  <!-- Bottom sheet: share -->
+  <div class="sheet-backdrop" id="share-backdrop"></div>
+  <div class="sheet" id="share-sheet" role="dialog" aria-modal="true" aria-label="Share this role">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">Share this role</div>
+      <div class="sheet-sub">Pick a way</div>
+    </div>
+    <div class="sheet-callout">
+      <span class="icon">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      </span>
+      <span>Your friend must apply through <strong>your unique link</strong> — that's how the referral counts.</span>
+    </div>
+    <div class="share-list">
+      <button class="share-item">
+        <div class="share-icon whatsapp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
+        </div>
+        <div class="share-meta">
+          <div class="share-label">WhatsApp</div>
+          <div class="share-hint">Most people will open it here</div>
+        </div>
+        <svg class="share-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <button class="share-item">
+        <div class="share-icon linkedin">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </div>
+        <div class="share-meta">
+          <div class="share-label">LinkedIn</div>
+          <div class="share-hint">Share to a connection or your feed</div>
+        </div>
+        <svg class="share-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <button class="share-item">
+        <div class="share-icon copy">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <div class="share-meta">
+          <div class="share-label">Copy referral link</div>
+          <div class="share-hint">Paste it anywhere you like</div>
+        </div>
+        <svg class="share-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+  // Tabs
+  document.querySelectorAll('.tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(t){
+        t.classList.remove('active');
+        t.setAttribute('aria-selected','false');
+      });
+      document.querySelectorAll('.tab-panel').forEach(function(p){
+        p.classList.remove('active');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      var panel = document.getElementById(tab.getAttribute('data-target'));
+      if(panel) panel.classList.add('active');
+    });
+  });
+
+  // Bottom sheet — share
+  (function(){
+    var trigger = document.getElementById('open-share');
+    var sheet = document.getElementById('share-sheet');
+    var backdrop = document.getElementById('share-backdrop');
+    function open(){
+      sheet.classList.add('active');
+      backdrop.classList.add('active');
+    }
+    function close(){
+      sheet.classList.remove('active');
+      backdrop.classList.remove('active');
+    }
+    if(trigger) trigger.addEventListener('click', open);
+    if(backdrop) backdrop.addEventListener('click', close);
+    // Close on share item tap (in real app, action would fire first)
+    document.querySelectorAll('.share-item').forEach(function(item){
+      item.addEventListener('click', function(){ setTimeout(close, 150); });
+    });
+    // Esc to close
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') close();
+    });
+  })();
+</script>
+
+</body>
+</html>
