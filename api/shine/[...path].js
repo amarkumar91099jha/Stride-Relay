@@ -1,7 +1,12 @@
 export default async function handler(req, res) {
-    // Use req.url directly to preserve trailing slashes and query strings
-    const relativePath = req.url.replace(/^\/api\/shine/, "");
-    const targetUrl = `https://www.shine.com/api${relativePath}`;
+    // req.query.path is Vercel's catch-all array, e.g. ['v2','search','job-description','18945512']
+    const segments = Array.isArray(req.query.path) ? req.query.path : [req.query.path || ""];
+    const pathStr = segments.filter(Boolean).join("/");
+
+    // Preserve query string; always add trailing slash (Shine API requires it)
+    const queryIndex = req.url ? req.url.indexOf("?") : -1;
+    const queryStr = queryIndex !== -1 ? req.url.slice(queryIndex) : "";
+    const targetUrl = `https://www.shine.com/api/${pathStr}/${queryStr}`;
 
     const headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",

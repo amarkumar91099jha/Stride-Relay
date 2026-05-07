@@ -1,9 +1,14 @@
 {
   "rewrites": [
     {
-      "source": "/((?!api/).*)",
+      "source": "/api/shine/:path*",
+      "destination": "/api/shine/:path*"
+    },
+    {
+      "source": "/:path((?!api/).*)*",
       "destination": "/index.html"
     }
   ]
 }
+
 
