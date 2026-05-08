@@ -13,9 +13,9 @@ import {
 } from "lucide-react";
 
 export function ReferralPage({ jobId }: { jobId: string }) {
-    const searchParams = useSearchParams();
-    const candidateId = searchParams.get("candidateId") ?? "";
-    const campaignSlug = searchParams.get("campaign") ?? "referral";
+    const searchParamsRaw = useSearchParams();
+    const candidateId = searchParamsRaw?.get("candidateId") ?? "";
+    const campaignSlug = searchParamsRaw?.get("campaign") ?? "referral";
     const [refereeName, setRefereeName] = useState("");
     const [refereePhone, setRefereePhone] = useState("");
     const [messageTemplate, setMessageTemplate] = useState("");

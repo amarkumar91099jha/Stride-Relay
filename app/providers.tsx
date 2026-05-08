@@ -5,22 +5,22 @@ import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: 5 * 60 * 1000,
-            retry: 1,
-          },
-        },
-      })
-  );
+    const [queryClient] = useState(
+        () =>
+            new QueryClient({
+                defaultOptions: {
+                    queries: {
+                        staleTime: 5 * 60 * 1000,
+                        retry: 1,
+                    },
+                },
+            })
+    );
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-      <Toaster position="bottom-center" />
-    </QueryClientProvider>
-  );
+    return (
+        <QueryClientProvider client={queryClient}>
+            {children}
+            <Toaster position="bottom-center" />
+        </QueryClientProvider>
+    );
 }

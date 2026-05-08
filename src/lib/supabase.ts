@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export const supabase = supabaseUrl && supabaseAnonKey
     ? createClient(supabaseUrl, supabaseAnonKey)
@@ -9,6 +9,6 @@ export const supabase = supabaseUrl && supabaseAnonKey
 
 if (!supabase) {
     console.warn(
-        "Supabase not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env",
+        "Supabase not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env",
     );
 }

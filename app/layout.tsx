@@ -3,19 +3,19 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "Stride Relay - Job Referrals via WhatsApp",
+    title: "Stride Relay - Job Referrals via WhatsApp",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body>
+                <Providers>{children}</Providers>
+            </body>
+        </html>
+    );
 }

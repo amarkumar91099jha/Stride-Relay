@@ -2,14 +2,14 @@ import { Suspense } from "react";
 import { ReferralPage } from "@/pages/ReferralPage";
 
 export default async function Page({
-  params,
+    params,
 }: {
-  params: Promise<{ jobId: string }>;
+    params: Promise<{ jobId: string }>;
 }) {
-  const { jobId } = await params;
-  return (
-    <Suspense>
-      <ReferralPage jobId={jobId} />
-    </Suspense>
-  );
+    const { jobId } = await params;
+    return (
+        <Suspense>
+            <ReferralPage jobId={jobId} />
+        </Suspense>
+    );
 }

@@ -19,11 +19,10 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                     key={item.to}
                     href={item.to}
                     onClick={onNavigate}
-                    className={`flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${
-                        pathname.startsWith(item.to)
+                    className={`flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-md transition-colors ${pathname.startsWith(item.to)
                             ? "bg-brand text-white"
                             : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                    }`}
+                        }`}
                 >
                     <item.icon className="h-4 w-4" />
                     {item.label}
