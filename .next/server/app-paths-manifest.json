@@ -1,4 +1,0 @@
-{
-  "/api/shine/[...path]/route": "app/api/shine/[...path]/route.js",
-  "/refer/[jobId]/page": "app/refer/[jobId]/page.js"
-}
